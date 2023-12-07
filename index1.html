@@ -1,0 +1,213 @@
+<html>
+<head>
+    <title>Responsive Calculator</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .calc-main
+        {
+            
+            display: flex;
+            
+            justify-content: center;
+            width: 100%;
+            height: 99vh;
+            
+        }
+
+        .calc-main .calc
+        {
+            margin-top: 100px;
+            width: 500px;
+            height: 600px;
+            background-color: #4862c7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            
+        }
+
+        .screen
+        {
+            background-color:#84c75bf5;
+            color: #FFFFFF;
+            width: 90%;
+            height: 100px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 50px;
+            font-weight: 500;
+            padding: 20px;
+        }
+
+        .dialpad
+        {
+            width: 90%;
+            background-color: #56baa7;
+            height: 420px;
+            margin-top: 30px;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;  
+        }
+
+        .btn
+        {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            border-radius: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 40px;
+            
+        }
+
+        .row
+        {
+            display: flex;
+            
+            flex-direction: column;
+           
+            justify-content: center;
+            padding: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="calc-main">
+        <div class="calc">
+            <div class="screen" id="sc">
+                
+            </div>
+            
+            <div class="dialpad">
+                <div class="row">
+                    <button class="btn" onclick="numclick(this)" data-num="7">7</button>
+                    <button class="btn" onclick="numclick(this)" data-num="4">4</button>
+                    <button class="btn" onclick="numclick(this)" data-num="1">1</button>
+                    <button class="btn" onclick="numclick(this)" data-num="0">0</button>
+                </div>
+                
+                <div class="row">
+                    <button class="btn" onclick="numclick(this)" data-num="8">8</button>
+                    <button class="btn" onclick="numclick(this)" data-num="5">5</button>
+                    <button class="btn" onclick="numclick(this)" data-num="2">2</button>
+                    <button class="btn" onclick="ce()">CE</button>
+                </div>
+
+                <div class="row">
+                    <button class="btn" onclick="numclick(this)" data-num="9">9</button>
+                    <button class="btn" onclick="numclick(this)" data-num="6">6</button>
+                    <button class="btn" onclick="numclick(this)" data-num="3">3</button>
+                    <button class="btn" onclick="ans()" >=</button>
+                </div>
+
+                <div class="row">
+                    <button class="btn" onclick="opPressed('+',this)">+</button>
+                    <button class="btn" onclick="opPressed('-' ,this)">-</button>
+                    <button class="btn" onclick="opPressed('*', this)">*</button>
+                    <button class="btn" onclick="opPressed('/', this)" >/</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var number ="";
+        var number2 = "";
+        var isOpPressed = false;
+        var screenDisplay = document.getElementById("sc");
+        var operatorType = "";
+        var currentBtn = null;
+
+        function numclick(element)
+        {
+            var key = element.getAttribute("data-num");
+            if(!isOpPressed)
+            {
+                number = number + key;
+            }
+            else
+            {
+                number2 = number2+key;
+            }
+            updateOnKeyPress();
+        }
+
+        function updateOnKeyPress()
+        {
+            if(!isOpPressed)
+            {
+                screenDisplay.innerHTML = number;
+            }
+            else
+            {
+                screenDisplay.innerHTML = number2;
+            }
+        }
+
+        function ce()
+        {
+            isOpPressed=false;
+            
+            screenDisplay.innerHTML = "0";
+            number = "";
+            number2="";
+        }
+
+        function opPressed(optype , btnObj)
+        {
+            if(isOpPressed || number=="")
+            {
+                return
+            }
+            isOpPressed=true;
+            operatorType = optype;
+            currentBtn = btnObj;
+            currentBtn.style.backgroundColor = "#FF7788";
+            screenDisplay.innerHTML="";
+        }
+
+        function ans()
+        {
+            if(!isOpPressed || number2=="")
+            {
+                return;
+            }
+            var ans =0;
+            switch(operatorType)
+            {
+                case "+":
+                ans = parseInt(number) +parseInt(number2);
+                break;
+                case "-":
+                ans = parseInt(number) -parseInt(number2);
+                break;
+                case "*":
+                ans = parseInt(number) *parseInt(number2);
+                break;
+                case "/":
+                ans = parseInt(number) /parseInt(number2);
+                break;
+            }
+            screenDisplay.innerHTML =ans;
+            isOpPressed=false;
+            number="";
+            number2="";
+            currentBtn.style.backgroundColor = "#FFFFFF";
+        }
+        ce();
+    </script>
+</body>
+</html>
